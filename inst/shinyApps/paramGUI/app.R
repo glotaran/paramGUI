@@ -420,11 +420,11 @@ server <- function(input, output, session) {
             isolate({
               rvs$spectempModel@specpar <- isolate(specvec)
               rvs$spectempFit<-spectemp(isolate(rvs$simData), isolate(rvs$spectempModel), iter=iters, kroncol = kroncol, lin=linr,l_posk=positivepar)
-              rvs$spectempFitSummary <- isolate(rvs$spectempFit$onls)
+              rvs$spectempFitSummary <- summary(isolate(rvs$spectempFit$onls))
               rvs$spectempFitTheta <- isolate(rvs$spectempFit$theta)
               updateConsole(isolate(rvs$modelType))
 
-              updatePlots(isolate(rvs$modelType), isolate(rvs$simData), isolate(rvs$spectempModel), isolate(rvs$spectempFitSummary), isolate(rvs$spectempFitTheta), linr = isolate(linr))
+              updatePlots(isolate(rvs$modelType), isolate(rvs$simData), isolate(rvs$spectempModel), isolate(rvs$spectempFit$onls), isolate(rvs$spectempFitTheta), linr = isolate(linr))
             })
 
           })
