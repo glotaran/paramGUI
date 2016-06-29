@@ -291,6 +291,7 @@ server <- function(input, output, session) {
 
     set.seed(isolate(input$simSeed))
 
+    validInput <- TRUE
     kinpar <- as.double(strsplit(isolate(input$simDecayRates),",")[[1]])
     amplitudes <- as.double(strsplit(input$simAmplitudes,",")[[1]])
     spec_loc <- strsplit(isolate(input$simSpecLoc), ",")[[1]]
@@ -325,8 +326,22 @@ server <- function(input, output, session) {
         "irfpar = c(",irfloc,",",irfwidth,")",",",
         "seqmod =",seqmod,")\n")
 
-    if(!is.na(lmin) && !is.na(lmax) && !is.na(tmax) && !is.na(deltal)
-       && length(kinpar)==length(amplitudes) && length(kinpar)==length(spec_loc)) {
+    if(is.na(lmin) || is.na(lmax) || is.na(tmax) || is.na(deltal)) {
+      validInput <- FALSE
+      output$dataPlot <- renderPlot({
+        plotMessage("Error: invalid timepoints or wavelength specification","red")
+      })
+    }
+
+      inputList <- list(kinpar,amplitudes,spec_loc,spec_wid,spec_b)
+      if(!length(unique(sapply(inputList,length)))==1) {
+        validInput <- FALSE
+        output$dataPlot <- renderPlot({
+          plotMessage("Error: parameter fields of unequal length","red")
+        })
+      }
+
+    if(validInput) {
     rvs$simData <- simndecay_gen_paramGUI(kinpar=kinpar,
                                           amplitudes = amplitudes,
                                           tmax=tmax,
@@ -342,7 +357,7 @@ server <- function(input, output, session) {
     # assign(".sim", isolate(rvs$simData) , globalenv())
     updateDataPlot(irfloc, linr)
     } else {
-      print("Invalid simulation input!", file=stderr())
+      cat("Invalid simulation input. No data was generated!", file=stderr())
     }
 
   })
@@ -514,6 +529,14 @@ server <- function(input, output, session) {
     output$dataPlot <- renderPlot({
       plotterforGUI(modtype="kin", data=isolate(rvs$simData), model=NULL, result=NULL,mu=irfloc,lin=linr)
     },res = 96)
+  }
+
+  plotMessage <- function(plotmsg = "An arror occured",msgcolor = "black") {
+  par(mar = c(0,0,0,0))
+  plot(c(0, 1), c(0, 1), ann = F, bty = 'n', type = 'n', xaxt = 'n', yaxt = 'n')
+  usr <- par( "usr" )
+  text(x = usr[1], y = usr[4], paste(plotmsg), adj = c( 0, 1),
+       cex = 1.6, col = msgcolor)
   }
 
   updateConsole <- function(modelType) {
