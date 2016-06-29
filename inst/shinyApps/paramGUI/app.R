@@ -301,7 +301,7 @@ server <- function(input, output, session) {
     lmin <- as.double(isolate(input$simMinWavelength))
     lmax <- as.double(isolate(input$simMaxWavelength))
     linAxis <- isolate(input$fitLinAxis)
-    linr <- if(length(linAxis)==0) NA else if(linAxis<0.1) NA else as.double(isolate(input$fitLinAxis))
+    linr <- if(is.na(linAxis)) {NA} else {if(linAxis<0.1) {NA} else {linAxis}}
     deltal <- as.double(isolate(input$simWavelengthStepSize))
     sigma <- as.double(isolate(input$simFracNoise))
     irf <- isolate(input$simEnableIRF)

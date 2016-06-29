@@ -8,7 +8,7 @@ plotterforGUI(modtype = "kin", X = matrix(), data, model,
   theta = vector(), result, lin = NA, mu = 0)
 }
 \arguments{
-\item{modtype}{either "kin", "spec" or "spectemp"}
+\item{modtype}{either 'kin', 'spec' or 'spectemp'}
 
 \item{X}{matrix of conditionally linear parameters, if any}
 
@@ -19,7 +19,7 @@ plotterforGUI(modtype = "kin", X = matrix(), data, model,
 \item{theta}{object of class \code{theta} containing parameters}
 
 \item{result}{object returned by \code{fitModel} or in the case
-\code{modtype=="spectemp"}, by \code{nls}}
+\code{modtype=='spectemp'}, by \code{nls}}
 
 \item{lin}{The linear range for the concentration plot}
 
