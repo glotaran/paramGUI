@@ -194,7 +194,7 @@ spectemp <- function(sim, model, iter, kroncol = FALSE, lin = NA,
 #' @export
 #'
 "plotterforGUI" <- function(modtype = "kin", X = matrix(), data,
-  model, theta = vector(), result, lin = NA, mu = 0) {
+  model, theta = vector(), result, lin = NA, mu = 0, guessIRF = FALSE) {
   ccs <- diverge_hcl(40, h = c(0, 120), c = 60, l = c(45, 90),
     power = 1.2)
   ## note that result is the return value of fitModel if
@@ -215,14 +215,19 @@ spectemp <- function(sim, model, iter, kroncol = FALSE, lin = NA,
   x <- data@x
   x2 <- data@x2
 
+  observed <- data@psi.df
+  svdobserved <- svd(observed)
+
   if (!is.null(model)) {
     if (modtype == "kin" && length(model@irfpar) > 0)
       mu <- unlist(parEst(result, param = "irfpar", dataset = 1,
         verbose = F))[1] else {
-      if (modtype == "spectemp" && length(theta@irfpar) >
-        0)
+      if (modtype == "spectemp" && length(theta@irfpar) > 0)
         mu <- head(theta@irfpar, 1) else mu <- 0
     }
+  } else if (guessIRF) {
+    lsv1 <- svd(data@psi.df)$u[, 1]
+    mu <- data@x[[floor((which(lsv1==min(lsv1))+which(lsv1==max(lsv1)))/2)]]
   }
 
   op <- par(no.readonly = TRUE)
@@ -269,7 +274,7 @@ spectemp <- function(sim, model, iter, kroncol = FALSE, lin = NA,
 
   # PLOT DATA
 
-  observed <- data@psi.df
+
   if (nt == 1) {
     plot(x = x2, y = observed, xlab = "wavelength (nm)",
       ylab = "", main = "Data", type = "l", xlim = c(min(x2),
@@ -306,7 +311,6 @@ spectemp <- function(sim, model, iter, kroncol = FALSE, lin = NA,
     par(mar = m)
 
     # PLOT SVD DATA
-    svdobserved <- svd(observed)
     plot(log10(svdobserved$d), main = "log(sing val. data)",
       ylab = "")
     lsv1 <- svdobserved$u[, 1]

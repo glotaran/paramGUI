@@ -5,7 +5,7 @@
 \title{Master plot function for paramGUI}
 \usage{
 plotterforGUI(modtype = "kin", X = matrix(), data, model,
-  theta = vector(), result, lin = NA, mu = 0)
+  theta = vector(), result, lin = NA, mu = 0, guessIRF = FALSE)
 }
 \arguments{
 \item{modtype}{either 'kin', 'spec' or 'spectemp'}

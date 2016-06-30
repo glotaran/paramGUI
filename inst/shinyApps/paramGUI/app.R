@@ -166,6 +166,7 @@ ui <- dashboardPage(
                h4("Load data"),
                fileInput("loadData",label=NULL),
                tags$script('$( "#loadData" ).on( "click", function() { this.value = null; });'),
+               tags$script('$(document).on("keypress", function (e) { Shiny.onInputChange("keyPressed", e.which); });'),
                # http://stackoverflow.com/questions/34441584/re-upload-same-file-shiny-r
                # TODO: http://stackoverflow.com/questions/17352086/how-can-i-update-a-shiny-fileinput-object
                actionButton('loadDefaultDataButton', label = "Load Default Data"),
@@ -207,7 +208,9 @@ ui <- dashboardPage(
       tabBox(title = "RESULTS",
              id = "outputTabs", height = "700px", width = "670px",
              tabPanel("Data",
-                      plotOutput("dataPlot", height = 650, width = 900)),
+                      plotOutput("dataPlot", height = 650, width = 900)
+                      #,checkboxInput("advPlotting", NULL, value = FALSE, width = NULL)
+                      ),
              tabPanel("Fit progression",
                       verbatimTextOutput("fitProgressOutput")),
              tabPanel("Fit results",
@@ -230,6 +233,7 @@ ui <- dashboardPage(
 server <- function(input, output, session) {
 
   rvs <- reactiveValues()
+  rvs$guessIRF <- FALSE
 
   # output$specControls <- renderUI({
   #  if((input$modelType == "kin" || input$modelType == "spectemp")) {
@@ -520,14 +524,14 @@ server <- function(input, output, session) {
 
   updatePlots <- function(modType="kin", data, model=NULL, result=NULL, theta=NULL, linr = NA) {
     output$fitPlot <- renderPlot({
-      plotterforGUI(modtype=modType, data=data, model=model, result=result, theta=theta, lin = linr)
+      plotterforGUI(modtype=modType, data=data, model=model, result=result, theta=theta, lin = linr, guessIRF = rvs$guessIRF)
     },res = 96)
   }
 
   updateDataPlot <- function(irfloc, linr) {
     # Plot the simulated data, and render it to the dataPlot field in output.
     output$dataPlot <- renderPlot({
-      plotterforGUI(modtype="kin", data=isolate(rvs$simData), model=NULL, result=NULL,mu=irfloc,lin=linr)
+      plotterforGUI(modtype="kin", data=isolate(rvs$simData), model=NULL, result=NULL,mu=irfloc,lin=linr,guessIRF = rvs$guessIRF)
     },res = 96)
   }
 
@@ -551,7 +555,7 @@ server <- function(input, output, session) {
   observe({
     linAxis <- input$fitLinAxis
     linr <- if(is.na(linAxis)) {NA} else {if(linAxis<0.1) {NA} else {linAxis}}
-    irfloc <- as.double(isolate(input$simLocIRF))
+    irfloc <- 0 # as.double(isolate(input$simLocIRF))
     if(!is.null(isolate(rvs$simData))) {
       updateDataPlot(irfloc, linr)
     }
@@ -603,6 +607,15 @@ server <- function(input, output, session) {
       plotterforGUI(modtype="kin", data=isolate(rvs$simData), model=NULL, result=NULL,mu=0,lin=1)
     },res = 96)
   }
+
+  observe({
+    if(!is.null(input$keyPressed)) {
+      cat("You pressed: ",input$keyPressed,file=stderr())
+      if(input$keyPressed==192) {
+        rvs$guessIRF <- !isolate(rvs$guessIRF)
+      }
+    }
+  })
 
 }
 
