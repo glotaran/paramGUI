@@ -24,6 +24,8 @@ plotterforGUI(modtype = "kin", X = matrix(), data, model,
 \item{lin}{The linear range for the concentration plot}
 
 \item{mu}{The center of the lin-log axis is \code{lin} is specified}
+
+\item{guessIRF}{Boolean to indicate whether to try and guess the location of the IRF}
 }
 \value{
 graphics

@@ -185,12 +185,14 @@ spectemp <- function(sim, model, iter, kroncol = FALSE, lin = NA,
 #' \code{modtype=='spectemp'}, by \code{nls}
 #' @param lin The linear range for the concentration plot
 #' @param mu The center of the lin-log axis is \code{lin} is specified
+#' @param guessIRF Boolean to indicate whether to try and guess the location of the IRF
 #'
 #' @return graphics
 #' @importFrom fields image.plot
 #' @importFrom colorspace diverge_hcl
 #' @importFrom TIMP compModel getSpecList parEst linloglines linlogplot irfparF matlinlogplot
 #' @importFrom graphics abline axis barplot image lines matlines matplot mtext par plot
+#' @importFrom stats dnorm
 #' @export
 #'
 "plotterforGUI" <- function(modtype = "kin", X = matrix(), data,
@@ -356,6 +358,7 @@ spectemp <- function(sim, model, iter, kroncol = FALSE, lin = NA,
       # if(lin == 0) # reversed plots
       if (!is.null(theta@irfpar)) {
         irf_for_plotting <- dnorm(x, theta@irfpar[1], theta@irfpar[2])
+        irf_for_plotting <- irf_for_plotting/max(irf_for_plotting)*max(C)
       }
 
       if (dolinlog) {
