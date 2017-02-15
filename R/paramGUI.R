@@ -232,6 +232,7 @@ spectemp <- function(sim, model, iter, kroncol = FALSE, lin = NA,
 
   op <- par(no.readonly = TRUE)
   # CHANGE PLOT OPTIONS
+  # TODO: change plotting options to one of the alternatives, layout or split.screen.
   if (!is.null(model)) {
     if ((nt == 1) || (nl == 1)) {
       par(mfrow = c(2, 2), oma = c(0, 0, 3, 0))
@@ -266,6 +267,7 @@ spectemp <- function(sim, model, iter, kroncol = FALSE, lin = NA,
           residuals[, j] <- residlist[[j]] else residuals[j, ] <- residlist[[j]]
       }
     } else {
+      #browser()
       residuals <- result$m$resid()
       dim(residuals) <- c(nt, nl)
     }
@@ -332,19 +334,9 @@ spectemp <- function(sim, model, iter, kroncol = FALSE, lin = NA,
     plot(x2, svdobserved$v[, 1], main = "1st RSV data", xlab = "wavelength (nm)",
       type = "l", ylab = "")
     abline(0, 0, lty = 3)
-    if (dolinlog) {
-      linlogplot(x = x, y = svdobserved$u[, 2], mu = mu,
-        alpha = lin, main = "2nd LSV data", xlab = "time (ps)",
-        type = "l", ylab = "", xlim = c(min(x), max(x)))
-    } else {
-      plot(x = x, y = svdobserved$u[, 2], main = "2nd LSV data",
-        xlab = "time (ps)", type = "l", ylab = "", xlim = c(min(x),
-          max(x)))
-    }
-    abline(0, 0, lty = 3)
-    plot(x2, svdobserved$v[, 2], main = "2nd RSV data", xlab = "wavelength (nm)",
-      type = "l", ylab = "")
-    abline(0, 0, lty = 3)
+
+    # moved plotting of 2nd LSV and RSV after plotting of spectra
+
   }
 
 
@@ -362,15 +354,25 @@ spectemp <- function(sim, model, iter, kroncol = FALSE, lin = NA,
 
 
       # if(lin == 0) # reversed plots
+      if (!is.null(theta@irfpar)) {
+        irf_for_plotting <- dnorm(x, theta@irfpar[1], theta@irfpar[2])
+      }
+
       if (dolinlog) {
         matlinlogplot(x, C, mu, lin, ylab = "", xlab = "time (ps)",
           main = "Concentrations", type = "l", lty = 1)
+        if (!is.null(theta@irfpar)) {
+        matlinlogplot(x, irf_for_plotting, mu, lin, type = "l", lty = 2, add = TRUE)
+        }
       } else {
         matplot(x, C, xlab = "time (ps)", ylab = "",
           main = "Concentrations", type = "l", lty = 1)
-
+        if (!is.null(theta@irfpar)) {
+        matplot(x, irf_for_plotting, type = "l", lty = 2, add = TRUE)
+        }
 
       }
+
       if (data@simdata) {
         if ((modtype == "kin") || (modtype == "spectemp")) {
           amplitudes = data@amplitudes
@@ -429,6 +431,23 @@ spectemp <- function(sim, model, iter, kroncol = FALSE, lin = NA,
     } else {
       barplot(X[1, ], main = "Amplitudes", ylab = "", xlab = "component",
         lty = 1)
+    }
+
+    # Moved 2nd LSV and RSV here:
+    if (nt > 1 && nl > 1) {
+      if (dolinlog) {
+        linlogplot(x = x, y = svdobserved$u[, 2], mu = mu,
+                   alpha = lin, main = "2nd LSV data", xlab = "time (ps)",
+                   type = "l", ylab = "", xlim = c(min(x), max(x)))
+      } else {
+        plot(x = x, y = svdobserved$u[, 2], main = "2nd LSV data",
+             xlab = "time (ps)", type = "l", ylab = "", xlim = c(min(x),
+                                                                 max(x)))
+      }
+      abline(0, 0, lty = 3)
+      plot(x2, svdobserved$v[, 2], main = "2nd RSV data", xlab = "wavelength (nm)",
+           type = "l", ylab = "")
+      abline(0, 0, lty = 3)
     }
     # PLOT RESIDS
     if (nt == 1) {

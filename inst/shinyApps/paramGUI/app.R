@@ -106,7 +106,7 @@ ui <- dashboardPage(
                         textInput("simWavelengthStepSize", label = "Stepsize:", value = "5"))
                ),
                fluidRow(
-                 column(6,numericInput("simFracNoise", label = "Stdev. noise:", value = "0.05", min = 0, step = 0.01)),
+                 column(6,numericInput("simFracNoise", label = "Stdev. noise:", value = "0.01", min = 0, step = 0.01)),
                  column(6,numericInput("simSeed", label = "Seed:", value = "123", min = 0, step = 1))
                ),
                checkboxInput("simEnableIRF", label = "Add Gaussian IRF", value = FALSE, width = NULL),
@@ -563,7 +563,8 @@ server <- function(input, output, session) {
     if(!is.null(isolate(rvs$simData))) {
       if(rvs$modelType=="kin" && !is.null(isolate(rvs$kinFit))) updatePlots(isolate(rvs$modelType), isolate(rvs$simData), isolate(rvs$kinModel), isolate(rvs$kinFit), linr = isolate(linr))
       if(rvs$modelType=="spec" && !is.null(isolate(rvs$specFit))) updatePlots(isolate(rvs$modelType), isolate(rvs$simData), isolate(rvs$specModel), isolate(rvs$specFit), linr = isolate(linr))
-      if(rvs$modelType=="spectemp" && !is.null(isolate(rvs$spectempFit))) updatePlots(isolate(rvs$modelType), isolate(rvs$simData), isolate(rvs$spectempModel), isolate(rvs$spectempFitSummary), isolate(rvs$spectempFitTheta), linr = isolate(linr))
+      if(rvs$modelType=="spectemp" && !is.null(isolate(rvs$spectempFit))) updatePlots(isolate(rvs$modelType), isolate(rvs$simData), isolate(rvs$spectempModel), isolate(rvs$spectempFit$onls), isolate(rvs$spectempFitTheta), linr = isolate(linr))
+
     }
   })
 
@@ -608,10 +609,11 @@ server <- function(input, output, session) {
     },res = 96)
   }
 
+  # Function that listens to key presses
   observe({
     if(!is.null(input$keyPressed)) {
-      cat("You pressed: ",input$keyPressed,file=stderr())
-      if(input$keyPressed==192) {
+        # cat("You pressed: ",input$keyPressed,file=stderr())
+      if(input$keyPressed==192) { #ctrl+~
         rvs$guessIRF <- !isolate(rvs$guessIRF)
       }
     }
