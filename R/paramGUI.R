@@ -269,7 +269,6 @@ spectemp <- function(sim, model, iter, kroncol = FALSE, lin = NA,
           residuals[, j] <- residlist[[j]] else residuals[j, ] <- residlist[[j]]
       }
     } else {
-      #browser()
       residuals <- result$m$resid()
       dim(residuals) <- c(nt, nl)
     }
@@ -356,21 +355,25 @@ spectemp <- function(sim, model, iter, kroncol = FALSE, lin = NA,
 
 
       # if(lin == 0) # reversed plots
-      if (!is.null(theta@irfpar)) {
-        irf_for_plotting <- dnorm(x, theta@irfpar[1], theta@irfpar[2])
-        irf_for_plotting <- irf_for_plotting/max(irf_for_plotting)*max(C)
+      if (length(theta@irfpar)>0) {
+        if (theta@irfpar[2]>0) {
+          irf_for_plotting <- dnorm(x, theta@irfpar[1], theta@irfpar[2])
+          irf_for_plotting <- irf_for_plotting/max(irf_for_plotting)*max(C)
+        } else {
+          irf_for_plotting <- rep(0,length(x))
+        }
       }
 
       if (dolinlog) {
         matlinlogplot(x, C, mu, lin, ylab = "", xlab = "time (ps)",
           main = "Concentrations", type = "l", lty = 1)
-        if (!is.null(theta@irfpar)) {
+        if (length(theta@irfpar)>0) {
         matlinlogplot(x, irf_for_plotting, mu, lin, type = "l", lty = 2, add = TRUE)
         }
       } else {
         matplot(x, C, xlab = "time (ps)", ylab = "",
           main = "Concentrations", type = "l", lty = 1)
-        if (!is.null(theta@irfpar)) {
+        if (length(theta@irfpar)>0) {
         matplot(x, irf_for_plotting, type = "l", lty = 2, add = TRUE)
         }
 
