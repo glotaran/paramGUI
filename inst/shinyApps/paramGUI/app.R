@@ -9,6 +9,7 @@
 
 ## paramGUI dependencies
 library(TIMP)
+library(paramGUI)
 
 ## Shiny app.R dependencies ##
 library(shiny)
