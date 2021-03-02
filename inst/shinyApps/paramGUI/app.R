@@ -313,7 +313,7 @@ server <- function(input, output, session) {
     linAxis <- isolate(input$fitLinAxis)
     linr <- if(is.na(linAxis)) {NA} else {if(linAxis<0.1) {NA} else {linAxis}}
     deltal <- as.double(isolate(input$simWavelengthStepSize))
-    sigma <- as.double(isolate(input$simFracNoise))
+    sigma <- as.double(gsub(",", ".", isolate(input$simFracNoise)))
     irf <- isolate(input$simEnableIRF)
     irfloc <- as.double(isolate(input$simLocIRF))
     irfwidth <- as.double(isolate(input$simWidthIRF))
