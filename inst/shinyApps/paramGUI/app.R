@@ -107,7 +107,7 @@ ui <- dashboardPage(
                         textInput("simWavelengthStepSize", label = "Stepsize:", value = "5"))
                ),
                fluidRow(
-                 column(6,numericInput("simFracNoise", label = "Stdev. noise:", value = "0.01", min = 0, step = 0.01)),
+                 column(6,textInput("simFracNoise", label = "Stdev. noise:", value = "1E-2")),
                  column(6,numericInput("simSeed", label = "Seed:", value = "123", min = 0, step = 1))
                ),
                checkboxInput("simEnableIRF", label = "Add Gaussian IRF", value = FALSE, width = NULL),
@@ -313,7 +313,7 @@ server <- function(input, output, session) {
     linAxis <- isolate(input$fitLinAxis)
     linr <- if(is.na(linAxis)) {NA} else {if(linAxis<0.1) {NA} else {linAxis}}
     deltal <- as.double(isolate(input$simWavelengthStepSize))
-    sigma <- as.double(isolate(input$simFracNoise))
+    sigma <- as.double(gsub(",", ".", isolate(input$simFracNoise)))
     irf <- isolate(input$simEnableIRF)
     irfloc <- as.double(isolate(input$simLocIRF))
     irfwidth <- as.double(isolate(input$simWidthIRF))
