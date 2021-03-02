@@ -558,7 +558,7 @@ server <- function(input, output, session) {
                             spec=isolate(rvs$specFitSummary),
                             spectemp=isolate(rvs$spectempFitSummary)
     )
-    output$consoleOutput <- renderPrint({print(resultToPrint)})
+    output$consoleOutput <- renderPrint({print(resultToPrint,width=100)})
   }
 
   observe({
