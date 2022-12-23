@@ -1,7 +1,8 @@
 #' Calculates a matrix in which each column is a skewed Gaussian
 #'
 #' @description Calculates a matrix in which each column is a skewed Gaussian.
-#' Like \code{calcEhiergaus} from TIMP package but uses a vector not a list of parameter estimates.
+#' Like \code{calcEhiergaus} from TIMP package but uses a vector not a list of
+#' parameter estimates.
 #'
 #' @param theta vector of parameter estimates
 #' @param lambda wavelengths at which to calculate model
@@ -29,11 +30,12 @@ calcE <- function(theta, lambda) {
 #' @param model object of class \code{dat} representing a model
 #' @param iter integer number of iterations
 #' @param kroncol object of class \code{logical} that is
-#' \code{TRUE} if the \code{kroneckcol} function should be used to formulate the model and
-#' \code{FALSE} if the standard \code{kronecker} is to be used instead
-#' @param lin defines the range to plot linearly (from -\code{lin} to +\code{lin})
+#' \code{TRUE} if the \code{kroneckcol} function should be used to formulate the
+#' model and \code{FALSE} if the standard \code{kronecker} is to be used instead
+#' @param lin defines the range to plot linearly
+#' (from -\code{lin} to +\code{lin})
 #' @param l_posk object of class \code{logical} indicating whether
-#' positivity constraints are enforced on the rate parameters
+#' positivity-constraints are enforced on the rate parameters
 #'
 #' @importFrom TIMP compModel
 #' @importFrom stats nls nls.control
@@ -143,7 +145,8 @@ spectemp <- function(sim, model, iter, kroncol = FALSE, lin = NA,
 
 #' kroneckercol: column-wise kronecker product
 #'
-#' @description The column-wise kronecker product is also called the Khatri–Rao product
+#' @description The column-wise kronecker product is also called
+#' the Khatri–Rao product
 #'
 #' @param A numerical matrix
 #' @param B numerical matrix
@@ -168,7 +171,8 @@ spectemp <- function(sim, model, iter, kroncol = FALSE, lin = NA,
 #' @param mu center of axis in the original \code{x} axis
 #' @param alpha linear part
 #'
-#' @return Returns matrix with new \code{x} values in first column and the corresponding labels in the second column.
+#' @return Returns matrix with new \code{x} values in first column and the
+#' corresponding labels in the second column.
 #'
 "linlogtics" <- function(x, mu, alpha) {
   maxorigx <- max(x)
@@ -207,13 +211,16 @@ spectemp <- function(sim, model, iter, kroncol = FALSE, lin = NA,
 #' \code{modtype=='spectemp'}, by \code{nls}
 #' @param lin The linear range for the concentration plot
 #' @param mu The center of the lin-log axis is \code{lin} is specified
-#' @param guessIRF Boolean to indicate whether to try and guess the location of the IRF
+#' @param guessIRF Boolean to indicate whether to try and guess the
+#' location of the IRF
 #'
 #' @return graphics
 #' @importFrom fields image.plot
 #' @importFrom colorspace diverge_hcl
-#' @importFrom TIMP compModel getSpecList parEst linloglines linlogplot irfparF matlinlogplot
-#' @importFrom graphics abline axis barplot image lines matlines matplot mtext par plot
+#' @importFrom TIMP compModel getSpecList parEst linloglines linlogplot
+#' @importFrom TIMP irfparF matlinlogplot
+#' @importFrom graphics abline axis barplot image lines matlines matplot
+#' @importFrom graphics mtext par plot
 #' @importFrom stats dnorm
 #' @export
 #'

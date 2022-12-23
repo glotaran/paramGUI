@@ -1,18 +1,22 @@
-## The two functions in R Script file were found in one of the answers to this question on stackoverflow.com:
-## http://stackoverflow.com/questions/30127019/check-whether-file-is-binary
-## The functions were written by the stackoverflow user MrFlick, a direct link to his answer is here:
-## http://stackoverflow.com/a/30128809/3020822
+## The two functions in R Script file were found in one of the answers to
+## this question on stackoverflow:
+## https://stackoverflow.com/q/30127019
+## The functions were written by the stackoverflow user MrFlick,
+## a direct link to his answer is here:
+## https://stackoverflow.com/a/30128809
 ## This answer was provided on May 8th 2015, which means as can be read here:
-## http://meta.stackexchange.com/questions/271080/the-mit-license-clarity-on-using-code-on-stack-overflow-and-stack-exchange
+## https://meta.stackexchange.com/q/271080
 ## the code falls under the CC-BY-SA license available here:
 ## https://creativecommons.org/licenses/by-sa/3.0/
 
 #' is_compressed
 #'
-#' @description Helper function for is_rdata, checks if the file is a compressed (gzip) file. Does not (yet) check for bzip2 or xz compression.
+#' @description Helper function for is_rdata, checks if the file is a
+#' compressed (gzip) file. Does not (yet) check for bzip2 or xz compression.
 #'
 #' @param filename The filename of the file to test for magic compression codes
-#' @param magic.number The magic numbers in as a vector of strings with the hexadecimal numbers (e.g. "0x1f")
+#' @param magic.number The magic numbers in as a vector of strings
+#' with the hexadecimal numbers (e.g. "0x1f")
 #'
 #' @return boolean, TRUE if the file is compressed
 #'

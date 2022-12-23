@@ -14,7 +14,8 @@ linlogtics(x, mu, alpha)
 \item{alpha}{linear part}
 }
 \value{
-Returns matrix with new \code{x} values in first column and the corresponding labels in the second column.
+Returns matrix with new \code{x} values in first column and the
+corresponding labels in the second column.
 }
 \description{
 Generate linlog tics for a linear-logarithmic axis
