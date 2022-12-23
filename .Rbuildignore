@@ -1,8 +1,12 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
-.git
-.gitignore
+^\.git
+^\.gitignore
+^\.vscode
 ^\.github$
+^\.builds
+^\.lintr$
+^\.pytest_cache
 LICENSE.md
 README.md
 CONTRIBUTING.md
