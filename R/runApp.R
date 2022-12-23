@@ -9,7 +9,6 @@
 #' runGUI()
 #' }
 #'
-#'
 runGUI <- function() {
   appDir <- system.file("shinyApps", "paramGUI", package = "paramGUI")
   if (appDir == "") {

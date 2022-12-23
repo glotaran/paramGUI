@@ -16,13 +16,17 @@
 #'
 #' @return boolean, TRUE if the file is compressed
 #'
-is_compressed <- function(filename, magic.number=as.raw(c("0x1f","0x8b"))) {
-  fh<-file(filename, "rb")
+is_compressed <- function(filename, magic.number = as.raw(c("0x1f", "0x8b"))) {
+  fh <- file(filename, "rb")
   on.exit(close(fh))
   magic <- readBin(fh, "raw", length(magic.number))
-  if(length(magic) != length(magic.number)) return(FALSE)
-  if(all(magic == magic.number)) return(TRUE)
-  return (FALSE)
+  if (length(magic) != length(magic.number)) {
+    return(FALSE)
+  }
+  if (all(magic == magic.number)) {
+    return(TRUE)
+  }
+  return(FALSE)
 }
 
 #' is_rdata
@@ -35,19 +39,23 @@ is_compressed <- function(filename, magic.number=as.raw(c("0x1f","0x8b"))) {
 #' @export
 #'
 is_rdata <- function(filename) {
-  #check for magic number
-  #https://github.com/wch/r-source/blob/b99d403f4b7337553acb2d2108c7a00e6c19f908/src/main/saveload.c#L1786
+  # check for magic number
+  # https://github.com/wch/r-source/blob/b99d403f4b7337553acb2d2108c7a00e6c19f908/src/main/saveload.c#L1786
 
-  fh <- if(!is_compressed(filename))
+  fh <- if (!is_compressed(filename)) {
     file(filename, "rb")
-  else {
+  } else {
     gzfile(filename, "rb")
   }
   on.exit(close(fh))
 
 
   magic <- rawToChar(readBin(fh, "raw", 5))
-  if(nchar(magic)<5) return(FALSE)
-  if(magic %in% c("RDA1\n","RDB1\n","RDX1\n","RDA2\n","RDB2\n","RDX2\n","RDA3\n","RDB3\n","RDX3\n")) return(TRUE)
-  return (FALSE)
+  if (nchar(magic) < 5) {
+    return(FALSE)
+  }
+  if (magic %in% c("RDA1\n", "RDB1\n", "RDX1\n", "RDA2\n", "RDB2\n", "RDX2\n", "RDA3\n", "RDB3\n", "RDX3\n")) {
+    return(TRUE)
+  }
+  return(FALSE)
 }
