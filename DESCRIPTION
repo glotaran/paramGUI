@@ -1,6 +1,6 @@
 Package: paramGUI
 Title: A Shiny GUI for some Parameter Estimation Examples
-Version: 2.1.4
+Version: 2.1.5
 Authors@R: c(
     person("Joris", "Snellenburg", , "j.snellenburg@vu.nl", role = c("cre", "aut")),
     person("Katharine", "Mullen", role = "aut"),
