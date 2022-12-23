@@ -4,3 +4,7 @@
 \name{paramGUI}
 \alias{paramGUI}
 \title{paramGUI}
+\description{
+Allows specification and fitting of some parameter estimation
+examples inspired by time-resolved spectroscopy via a Shiny GUI.
+}

@@ -9,7 +9,7 @@ linlogtics(x, mu, alpha)
 \arguments{
 \item{x}{values for which to calculate a linlog axis}
 
-\item{mu}{center of axis in the orginal \code{x} axis}
+\item{mu}{center of axis in the original \code{x} axis}
 
 \item{alpha}{linear part}
 }

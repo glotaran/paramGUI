@@ -12,7 +12,7 @@
 #' @description Helper function for is_rdata, checks if the file is a compressed (gzip) file. Does not (yet) check for bzip2 or xz compression.
 #'
 #' @param filename The filename of the file to test for magic compression codes
-#' @param magic.number The magic numbers in as a vector of strings with the hexidecimal numbers (e.g. "0x1f")
+#' @param magic.number The magic numbers in as a vector of strings with the hexadecimal numbers (e.g. "0x1f")
 #'
 #' @return boolean, TRUE if the file is compressed
 #'

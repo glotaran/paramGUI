@@ -165,7 +165,7 @@ spectemp <- function(sim, model, iter, kroncol = FALSE, lin = NA,
 #' Generate linlog tics for a linear-logarithmic axis
 #'
 #' @param x values for which to calculate a linlog axis
-#' @param mu center of axis in the orginal \code{x} axis
+#' @param mu center of axis in the original \code{x} axis
 #' @param alpha linear part
 #'
 #' @return Returns matrix with new \code{x} values in first column and the corresponding labels in the second column.
