@@ -4,6 +4,3 @@
 \name{paramGUI}
 \alias{paramGUI}
 \title{paramGUI}
-\description{
-paramGUI
-}
