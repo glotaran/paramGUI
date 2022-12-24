@@ -306,7 +306,7 @@ spectemp <- function(sim, model, iter, kroncol = FALSE, lin = NA,
     if (!modtype == "spectemp") {
       residuals <- matrix(nrow = nt, ncol = nl)
       residlist <- result$currModel@fit@resultlist[[1]]@resid
-      for (j in seq_len(residlist)) {
+      for (j in seq_along(residlist)) {
         if (modtype == "kin") {
           residuals[, j] <- residlist[[j]]
         } else {
