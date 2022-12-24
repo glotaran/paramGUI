@@ -216,7 +216,6 @@ spectemp <- function(sim, model, iter, kroncol = FALSE, lin = NA,
 #'
 #' @return graphics
 #' @importFrom fields image.plot
-#' @importFrom colorspace diverge_hcl
 #' @importFrom TIMP compModel getSpecList parEst linloglines linlogplot
 #' @importFrom TIMP irfparF matlinlogplot
 #' @importFrom graphics abline axis barplot image lines matlines matplot
@@ -226,10 +225,24 @@ spectemp <- function(sim, model, iter, kroncol = FALSE, lin = NA,
 #'
 "plotterforGUI" <- function(modtype = "kin", X = matrix(), data,
                             model, theta = vector(), result, lin = NA, mu = 0, guessIRF = FALSE) {
-  ccs <- diverge_hcl(40,
-    h = c(0, 120), c = 60, l = c(45, 90),
-    power = 1.2
+  # hard coded color table, avoiding explicit dependency on colorspace
+  ccs <- c(
+    "#A84D63", "#AC576A", "#B06072", "#B46979", "#B87280", "#BC7A87",
+    "#C0838F", "#C38B96", "#C7939D", "#CA9BA4", "#CDA3AB", "#D0ABB2",
+    "#D3B3B8", "#D6BABF", "#D8C1C5", "#DAC8CB", "#DDCFD1", "#DFD5D7",
+    "#E0DBDC", "#E2E0E1", "#E0E1E0", "#DBDDDA", "#D4D9D3", "#CDD4CB",
+    "#C5D0C3", "#BDCBBA", "#B5C5B1", "#ADC0A8", "#A4BB9E", "#9CB594",
+    "#93AF8A", "#8AA980", "#81A475", "#779E6A", "#6E985F", "#649253",
+    "#5A8B46", "#508538", "#457F27", "#3A790D"
   )
+  # To regenerate the color table, use the following code:
+  # # Note this requires:
+  # # @importFrom colorspace diverge_hcl
+  # ccs <- diverge_hcl(40,
+  #   h = c(0, 120), c = 60, l = c(45, 90),
+  #   power = 1.2
+  # )
+
   ## note that result is the return value of fitModel if
   ## modtype=='spec' or modtype == 'kin', and the return value
   ## of nls otherwise
