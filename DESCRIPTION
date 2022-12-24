@@ -4,7 +4,7 @@ Version: 2.2.0
 Authors@R: c(
     person("Joris", "Snellenburg", , "j.snellenburg@vu.nl", role = c("cre", "aut")),
     person("Katharine", "Mullen", role = "aut"),
-    person("Ivo", "van Stokkum", , "ivo@few.vu.nl", role = "aut")
+    person("Ivo", "van Stokkum", , "i.h.m.van.stokkum@vu.nl", role = "aut")
   )
 Description: Allows specification and fitting of some parameter estimation
     examples inspired by time-resolved spectroscopy via a Shiny GUI.
