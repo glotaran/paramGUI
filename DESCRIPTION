@@ -1,6 +1,6 @@
 Package: paramGUI
 Title: A Shiny GUI for some Parameter Estimation Examples
-Version: 2.1.5
+Version: 2.2.0
 Authors@R: c(
     person("Joris", "Snellenburg", , "j.snellenburg@vu.nl", role = c("cre", "aut")),
     person("Katharine", "Mullen", role = "aut"),
@@ -10,7 +10,6 @@ Description: Allows specification and fitting of some parameter estimation
     examples inspired by time-resolved spectroscopy via a Shiny GUI.
 License: GPL (>= 2)
 Depends:
-    colorspace,
     fields,
     R (>= 3.0.0),
     shiny,
