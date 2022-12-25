@@ -8,13 +8,16 @@ Authors@R: c(
   )
 Description: Allows specification and fitting of some parameter estimation
     examples inspired by time-resolved spectroscopy via a Shiny GUI.
+URL: https://github.com/glotaran/paramGUI/
 License: GPL (>= 2)
 Depends:
-    fields,
-    R (>= 3.0.0),
+    R (>= 3.0.0)
+Imports:
     shiny,
     shinydashboard,
-    TIMP
+    TIMP,
+    fields
+BugReports: https://github.com/glotaran/paramGUI/issues
 Encoding: UTF-8
 Language: en-US
 LazyData: true

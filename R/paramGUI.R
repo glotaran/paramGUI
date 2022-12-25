@@ -18,8 +18,12 @@ calcE <- function(theta, lambda) {
   spec <- matrix(nrow = nl, ncol = nspec)
   for (i in 1:nspec) {
     ioff <- (i - 1) * npare
-    spec[, i] <- skew(theta[ioff + 1], theta[ioff + 2], theta[ioff +
-      3], l2nu(lambda), nupower = 1)
+    spec[, i] <- skew(theta[ioff + 1],
+      theta[ioff + 2],
+      theta[ioff + 3],
+      l2nu(lambda),
+      nupower = 1
+    )
   }
   spec
 }
@@ -42,7 +46,11 @@ calcE <- function(theta, lambda) {
 #' @importFrom utils head tail
 #' @export
 #'
-spectemp <- function(sim, model, iter, kroncol = FALSE, lin = NA,
+spectemp <- function(sim,
+                     model,
+                     iter,
+                     kroncol = FALSE,
+                     lin = NA,
                      l_posk = FALSE) {
   psisim <- as.vector(sim@psi.df)
   dummy <- as.data.frame(psisim)
@@ -62,26 +70,40 @@ spectemp <- function(sim, model, iter, kroncol = FALSE, lin = NA,
       kronform <- psisim ~ kroneckercol(
         A = calcE(sp, x2),
         B = compModel(
-          k = exp(k), x = x, seqmod = seqmod,
-          irf = irf, irfpar = irfpar
+          k = exp(k),
+          x = x,
+          seqmod = seqmod,
+          irf = irf,
+          irfpar = irfpar
         )
       )
     } else {
-      kronform <- psisim ~ kronecker(calcE(sp, x2), compModel(
-        k = exp(k),
-        x = x, seqmod = seqmod, irf = irf, irfpar = irfpar
-      ))
+      kronform <- psisim ~ kronecker(
+        calcE(sp, x2),
+        compModel(
+          k = exp(k),
+          x = x,
+          seqmod = seqmod,
+          irf = irf,
+          irfpar = irfpar
+        )
+      )
     }
 
     # NB warnOnly=TRUE, to return also in case of nonconvergence
-    onls <- nls(kronform,
+    onls <- nls(
+      kronform,
       control = nls.control(
         printEval = TRUE,
-        warnOnly = TRUE, maxiter = iter
-      ), start = list(
+        warnOnly = TRUE,
+        maxiter = iter
+      ),
+      start = list(
         k = log(kinpar),
-        sp = specpar, irfpar = irfpar
-      ), algorithm = "plinear",
+        sp = specpar,
+        irfpar = irfpar
+      ),
+      algorithm = "plinear",
       trace = TRUE
     )
   } else {
@@ -90,26 +112,39 @@ spectemp <- function(sim, model, iter, kroncol = FALSE, lin = NA,
       kronform <- psisim ~ kroneckercol(
         A = calcE(sp, x2),
         B = compModel(
-          k = k, x = x, seqmod = seqmod,
-          irf = irf, irfpar = irfpar
+          k = k,
+          x = x,
+          seqmod = seqmod,
+          irf = irf,
+          irfpar = irfpar
         )
       )
     } else {
-      kronform <- psisim ~ kronecker(calcE(sp, x2), compModel(
-        k = k,
-        x = x, seqmod = seqmod, irf = irf, irfpar = irfpar
-      ))
+      kronform <- psisim ~ kronecker(
+        calcE(sp, x2),
+        compModel(
+          k = k,
+          x = x,
+          seqmod = seqmod,
+          irf = irf,
+          irfpar = irfpar
+        )
+      )
     }
 
     # NB warnOnly=TRUE, to return also in case of nonconvergence
-    onls <- nls(kronform,
+    onls <- nls(
+      kronform,
       control = nls.control(
         printEval = TRUE,
-        warnOnly = TRUE, maxiter = iter
-      ), start = list(
+        warnOnly = TRUE,
+        maxiter = iter
+      ),
+      start = list(
         k = kinpar,
         sp = specpar, irfpar = irfpar
-      ), algorithm = "plinear",
+      ),
+      algorithm = "plinear",
       trace = TRUE
     )
   } # unexpected closing bracket
@@ -223,17 +258,57 @@ spectemp <- function(sim, model, iter, kroncol = FALSE, lin = NA,
 #' @importFrom stats dnorm
 #' @export
 #'
-"plotterforGUI" <- function(modtype = "kin", X = matrix(), data,
-                            model, theta = vector(), result, lin = NA, mu = 0, guessIRF = FALSE) {
+"plotterforGUI" <- function(modtype = "kin",
+                            X = matrix(),
+                            data,
+                            model,
+                            theta = vector(),
+                            result,
+                            lin = NA,
+                            mu = 0,
+                            guessIRF = FALSE) {
   # hard coded color table, avoiding explicit dependency on colorspace
   ccs <- c(
-    "#A84D63", "#AC576A", "#B06072", "#B46979", "#B87280", "#BC7A87",
-    "#C0838F", "#C38B96", "#C7939D", "#CA9BA4", "#CDA3AB", "#D0ABB2",
-    "#D3B3B8", "#D6BABF", "#D8C1C5", "#DAC8CB", "#DDCFD1", "#DFD5D7",
-    "#E0DBDC", "#E2E0E1", "#E0E1E0", "#DBDDDA", "#D4D9D3", "#CDD4CB",
-    "#C5D0C3", "#BDCBBA", "#B5C5B1", "#ADC0A8", "#A4BB9E", "#9CB594",
-    "#93AF8A", "#8AA980", "#81A475", "#779E6A", "#6E985F", "#649253",
-    "#5A8B46", "#508538", "#457F27", "#3A790D"
+    "#A84D63",
+    "#AC576A",
+    "#B06072",
+    "#B46979",
+    "#B87280",
+    "#BC7A87",
+    "#C0838F",
+    "#C38B96",
+    "#C7939D",
+    "#CA9BA4",
+    "#CDA3AB",
+    "#D0ABB2",
+    "#D3B3B8",
+    "#D6BABF",
+    "#D8C1C5",
+    "#DAC8CB",
+    "#DDCFD1",
+    "#DFD5D7",
+    "#E0DBDC",
+    "#E2E0E1",
+    "#E0E1E0",
+    "#DBDDDA",
+    "#D4D9D3",
+    "#CDD4CB",
+    "#C5D0C3",
+    "#BDCBBA",
+    "#B5C5B1",
+    "#ADC0A8",
+    "#A4BB9E",
+    "#9CB594",
+    "#93AF8A",
+    "#8AA980",
+    "#81A475",
+    "#779E6A",
+    "#6E985F",
+    "#649253",
+    "#5A8B46",
+    "#508538",
+    "#457F27",
+    "#3A790D"
   )
   # To regenerate the color table, use the following code:
   # # Note this requires:
@@ -266,8 +341,10 @@ spectemp <- function(sim, model, iter, kroncol = FALSE, lin = NA,
 
   if (!is.null(model)) {
     if (modtype == "kin" && length(model@irfpar) > 0) {
-      mu <- unlist(parEst(result,
-        param = "irfpar", dataset = 1,
+      mu <- unlist(parEst(
+        result,
+        param = "irfpar",
+        dataset = 1,
         verbose = FALSE
       ))[1]
     } else {
@@ -279,12 +356,14 @@ spectemp <- function(sim, model, iter, kroncol = FALSE, lin = NA,
     }
   } else if (guessIRF) {
     lsv1 <- svd(data@psi.df)$u[, 1]
-    mu <- data@x[[floor((which(lsv1 == min(lsv1)) + which(lsv1 == max(lsv1))) / 2)]]
+    mu <- data@x[[floor((which(lsv1 == min(lsv1)) +
+      which(lsv1 == max(lsv1))) / 2)]]
   }
 
   op <- par(no.readonly = TRUE)
   # CHANGE PLOT OPTIONS
-  # TODO: change plotting options to one of the alternatives, layout or split.screen.
+  # TODO: change plotting options to one of the alternatives:
+  # layout or split.screen.
   if (!is.null(model)) {
     if ((nt == 1) || (nl == 1)) {
       par(mfrow = c(2, 2), oma = c(0, 0, 3, 0))
@@ -338,14 +417,23 @@ spectemp <- function(sim, model, iter, kroncol = FALSE, lin = NA,
 
   if (nt == 1) {
     plot(
-      x = x2, y = observed, xlab = "wavelength (nm)",
-      ylab = "", main = "Data", type = "l", xlim = c(
+      x = x2,
+      y = observed,
+      xlab = "wavelength (nm)",
+      ylab = "",
+      main = "Data",
+      type = "l",
+      xlim = c(
         min(x2),
         max(x2)
       )
     )
     if (!is.null(model)) {
-      lines(x = x2, y = observed - residuals[1, ], col = "red")
+      lines(
+        x = x2,
+        y = observed - residuals[1, ],
+        col = "red"
+      )
     }
     abline(0, 0)
   } else if (nl == 1) {
@@ -353,32 +441,53 @@ spectemp <- function(sim, model, iter, kroncol = FALSE, lin = NA,
     ## (ps)',ylab='', main = 'Data', type = 'l', xlim=c(min(x),
     ## max(x)))
     plot(
-      x = x, y = observed, xlab = "time (ps)", ylab = "",
-      main = "Data", type = "l", xlim = c(min(x), max(x))
+      x = x,
+      y = observed,
+      xlab = "time (ps)",
+      ylab = "",
+      main = "Data",
+      type = "l",
+      xlim = c(min(x), max(x))
     )
     if (!is.null(model)) {
-      lines(x = x, y = observed - residuals[, 1], col = "red")
+      lines(
+        x = x,
+        y = observed - residuals[, 1],
+        col = "red"
+      )
     }
     abline(0, 0)
   } else {
     m <- par("mar")
     par(mar = c(m[1:3], 3))
     if (dolinlog) {
-      image(xnew, x2, observed,
+      image(
+        xnew,
+        x2,
+        observed,
         ylab = "wavelength (nm)",
-        xaxt = "n", main = "Data", xlab = "time (ps)",
+        xaxt = "n",
+        main = "Data",
+        xlab = "time (ps)",
         col = ccs
       )
       axis(1, at = newlab[, 1], labels = newlab[, 2])
       # mtext(side = 1, newlab[,2], at= newlab[,1], line = 1)
-      image.plot(xnew, x2, observed,
+      image.plot(xnew,
+        x2,
+        observed,
         legend.only = TRUE,
         col = ccs
       )
     } else {
-      image.plot(xnew, x2, observed,
+      image.plot(
+        xnew,
+        x2,
+        observed,
         ylab = "wavelength (nm)",
-        main = "Data", xlab = "time (ps)", col = ccs
+        main = "Data",
+        xlab = "time (ps)",
+        col = ccs
       )
     }
     par(mar = m)
@@ -394,24 +503,40 @@ spectemp <- function(sim, model, iter, kroncol = FALSE, lin = NA,
     # minlsv1=0 if (maxlsv1 < 0) maxlsv1=0
     if (dolinlog) {
       linlogplot(
-        x = x, y = lsv1, mu = mu, alpha = lin,
-        main = "1st LSV data", xlab = "time (ps)", type = "l",
-        ylab = "", xlim = c(min(x), max(x)), ylim = c(min(
+        x = x,
+        y = lsv1,
+        mu = mu,
+        alpha = lin,
+        main = "1st LSV data",
+        xlab = "time (ps)",
+        type = "l",
+        ylab = "",
+        xlim = c(min(x), max(x)),
+        ylim = c(min(
           lsv1,
           0
         ), max(lsv1, 0))
       )
     } else {
       plot(
-        x = x, y = lsv1, main = "1st LSV data", xlab = "time (ps)",
-        type = "l", ylab = "", xlim = c(min(x), max(x)),
+        x = x,
+        y = lsv1,
+        main = "1st LSV data",
+        xlab = "time (ps)",
+        type = "l",
+        ylab = "",
+        xlim = c(min(x), max(x)),
         ylim = c(min(lsv1, 0), max(lsv1, 0))
       )
     }
     abline(0, 0, lty = 3)
-    plot(x2, svdobserved$v[, 1],
-      main = "1st RSV data", xlab = "wavelength (nm)",
-      type = "l", ylab = ""
+    plot(
+      x2,
+      svdobserved$v[, 1],
+      main = "1st RSV data",
+      xlab = "wavelength (nm)",
+      type = "l",
+      ylab = ""
     )
     abline(0, 0, lty = 3)
 
@@ -425,8 +550,11 @@ spectemp <- function(sim, model, iter, kroncol = FALSE, lin = NA,
 
       if (!modtype == "spec") {
         C <- compModel(
-          k = theta@kinpar, x = x, irfpar = theta@irfpar,
-          irf = model@irf, seqmod = model@seqmod
+          k = theta@kinpar,
+          x = x,
+          irfpar = theta@irfpar,
+          irf = model@irf,
+          seqmod = model@seqmod
         )
       } else {
         # modtype == 'spec'
@@ -439,27 +567,54 @@ spectemp <- function(sim, model, iter, kroncol = FALSE, lin = NA,
       if (length(theta@irfpar) > 0) {
         if (theta@irfpar[2] > 0) {
           irf_for_plotting <- dnorm(x, theta@irfpar[1], theta@irfpar[2])
-          irf_for_plotting <- irf_for_plotting / max(irf_for_plotting) * max(C)
+          irf_for_plotting <-
+            irf_for_plotting / max(irf_for_plotting) * max(C)
         } else {
           irf_for_plotting <- rep(0, length(x))
         }
       }
 
       if (dolinlog) {
-        matlinlogplot(x, C, mu, lin,
-          ylab = "", xlab = "time (ps)",
-          main = "Concentrations", type = "l", lty = 1
+        matlinlogplot(
+          x,
+          C,
+          mu,
+          lin,
+          ylab = "",
+          xlab = "time (ps)",
+          main = "Concentrations",
+          type = "l",
+          lty = 1
         )
         if (length(theta@irfpar) > 0) {
-          matlinlogplot(x, irf_for_plotting, mu, lin, type = "l", lty = 2, add = TRUE)
+          matlinlogplot(
+            x,
+            irf_for_plotting,
+            mu,
+            lin,
+            type = "l",
+            lty = 2,
+            add = TRUE
+          )
         }
       } else {
-        matplot(x, C,
-          xlab = "time (ps)", ylab = "",
-          main = "Concentrations", type = "l", lty = 1
+        matplot(
+          x,
+          C,
+          xlab = "time (ps)",
+          ylab = "",
+          main = "Concentrations",
+          type = "l",
+          lty = 1
         )
         if (length(theta@irfpar) > 0) {
-          matplot(x, irf_for_plotting, type = "l", lty = 2, add = TRUE)
+          matplot(
+            x,
+            irf_for_plotting,
+            type = "l",
+            lty = 2,
+            add = TRUE
+          )
         }
       }
 
@@ -473,35 +628,56 @@ spectemp <- function(sim, model, iter, kroncol = FALSE, lin = NA,
           )
           if (dolinlog) {
             matlinlogplot(
-              x = x, mu = mu, alpha = lin,
-              y = aC2, col = "blue", lty = 3, add = TRUE,
+              x = x,
+              mu = mu,
+              alpha = lin,
+              y = aC2,
+              col = "blue",
+              lty = 3,
+              add = TRUE,
               type = "l"
             )
           } else {
             matplot(
-              x = x, y = aC2, col = "blue", lty = 3,
-              add = TRUE, type = "l"
+              x = x,
+              y = aC2,
+              col = "blue",
+              lty = 3,
+              add = TRUE,
+              type = "l"
             )
           }
         } else {
           if (dolinlog) {
             matlinlogplot(
-              x = x, mu = mu, alpha = lin,
-              y = data@C2, col = "blue", lty = 3, add = TRUE,
+              x = x,
+              mu = mu,
+              alpha = lin,
+              y = data@C2,
+              col = "blue",
+              lty = 3,
+              add = TRUE,
               type = "l"
             )
           } else {
             matplot(
-              x = x, y = data@C2, col = "blue",
-              lty = 3, add = TRUE, type = "l"
+              x = x,
+              y = data@C2,
+              col = "blue",
+              lty = 3,
+              add = TRUE,
+              type = "l"
             )
           }
         }
       }
       abline(0, 0, lty = 3)
     } else {
-      barplot(X[1, ],
-        main = "Amplitudes", ylab = "", xlab = "component",
+      barplot(
+        X[1, ],
+        main = "Amplitudes",
+        ylab = "",
+        xlab = "component",
         lty = 1
       )
     }
@@ -514,7 +690,8 @@ spectemp <- function(sim, model, iter, kroncol = FALSE, lin = NA,
       }
       if (modtype == "spec") {
         E <- calcEhiergaus(
-          lambda = x2, theta = theta@specpar,
+          lambda = x2,
+          theta = theta@specpar,
           nupower = 1
         )
       }
@@ -522,9 +699,14 @@ spectemp <- function(sim, model, iter, kroncol = FALSE, lin = NA,
         E <- calcE(lambda = x2, theta = unlist(theta@specpar))
       }
 
-      matplot(x2, E,
-        main = "Spectra", ylab = "", xlab = "wavelength (nm)",
-        type = "l", lty = 1
+      matplot(
+        x2,
+        E,
+        main = "Spectra",
+        ylab = "",
+        xlab = "wavelength (nm)",
+        type = "l",
+        lty = 1
       )
       abline(0, 0, lty = 3)
 
@@ -540,8 +722,11 @@ spectemp <- function(sim, model, iter, kroncol = FALSE, lin = NA,
         }
       }
     } else {
-      barplot(X[1, ],
-        main = "Amplitudes", ylab = "", xlab = "component",
+      barplot(
+        X[1, ],
+        main = "Amplitudes",
+        ylab = "",
+        xlab = "component",
         lty = 1
       )
     }
@@ -550,31 +735,51 @@ spectemp <- function(sim, model, iter, kroncol = FALSE, lin = NA,
     if (nt > 1 && nl > 1) {
       if (dolinlog) {
         linlogplot(
-          x = x, y = svdobserved$u[, 2], mu = mu,
-          alpha = lin, main = "2nd LSV data", xlab = "time (ps)",
-          type = "l", ylab = "", xlim = c(min(x), max(x))
+          x = x,
+          y = svdobserved$u[, 2],
+          mu = mu,
+          alpha = lin,
+          main = "2nd LSV data",
+          xlab = "time (ps)",
+          type = "l",
+          ylab = "",
+          xlim = c(min(x), max(x))
         )
       } else {
         plot(
-          x = x, y = svdobserved$u[, 2], main = "2nd LSV data",
-          xlab = "time (ps)", type = "l", ylab = "", xlim = c(
+          x = x,
+          y = svdobserved$u[, 2],
+          main = "2nd LSV data",
+          xlab = "time (ps)",
+          type = "l",
+          ylab = "",
+          xlim = c(
             min(x),
             max(x)
           )
         )
       }
       abline(0, 0, lty = 3)
-      plot(x2, svdobserved$v[, 2],
-        main = "2nd RSV data", xlab = "wavelength (nm)",
-        type = "l", ylab = ""
+      plot(
+        x2,
+        svdobserved$v[, 2],
+        main = "2nd RSV data",
+        xlab = "wavelength (nm)",
+        type = "l",
+        ylab = ""
       )
       abline(0, 0, lty = 3)
     }
     # PLOT RESIDS
     if (nt == 1) {
       plot(
-        x = x2, y = residuals[1, ], xlab = "wavelength (nm)",
-        ylab = "", main = "Residuals", type = "l", xlim = c(
+        x = x2,
+        y = residuals[1, ],
+        xlab = "wavelength (nm)",
+        ylab = "",
+        main = "Residuals",
+        type = "l",
+        xlim = c(
           min(x2),
           max(x2)
         )
@@ -583,9 +788,15 @@ spectemp <- function(sim, model, iter, kroncol = FALSE, lin = NA,
     } else {
       if (nl == 1) {
         linlogplot(
-          x = x, y = residuals[, 1], mu = mu,
-          alpha = lin, xlab = "time (ps)", ylab = "",
-          main = "Residuals", type = "l", xlim = c(
+          x = x,
+          y = residuals[, 1],
+          mu = mu,
+          alpha = lin,
+          xlab = "time (ps)",
+          ylab = "",
+          main = "Residuals",
+          type = "l",
+          xlim = c(
             min(x),
             max(x)
           )
@@ -595,23 +806,38 @@ spectemp <- function(sim, model, iter, kroncol = FALSE, lin = NA,
         m <- par("mar")
         par(mar = c(m[1:3], 3))
         if (dolinlog) {
-          image(xnew, x2, residuals,
+          image(
+            xnew,
+            x2,
+            residuals,
             ylab = "wavelength (nm)",
-            xaxt = "n", main = "Residuals", col = ccs,
+            xaxt = "n",
+            main = "Residuals",
+            col = ccs,
             xlab = "time (ps)"
           )
           axis(1, at = newlab[, 1], labels = newlab[
             ,
             2
           ])
-          image.plot(xnew, x2, residuals,
+          image.plot(
+            xnew,
+            x2,
+            residuals,
             ylab = "wavelength (nm)",
-            legend.only = TRUE, main = "Residuals", col = ccs
+            legend.only = TRUE,
+            main = "Residuals",
+            col = ccs
           )
         } else {
-          image.plot(xnew, x2, residuals,
+          image.plot(
+            xnew,
+            x2,
+            residuals,
             ylab = "wavelength (nm)",
-            main = "Residuals", col = ccs, xlab = "time (ps)"
+            main = "Residuals",
+            col = ccs,
+            xlab = "time (ps)"
           )
         }
         par(mar = m)
@@ -625,14 +851,24 @@ spectemp <- function(sim, model, iter, kroncol = FALSE, lin = NA,
           ylab = ""
         )
         linlogplot(
-          x = x, y = svdresid$u[, 1], mu = mu,
-          alpha = lin, main = "1st LSV resid.", xlab = "time (ps)",
-          type = "l", ylab = "", xlim = c(min(x), max(x))
+          x = x,
+          y = svdresid$u[, 1],
+          mu = mu,
+          alpha = lin,
+          main = "1st LSV resid.",
+          xlab = "time (ps)",
+          type = "l",
+          ylab = "",
+          xlim = c(min(x), max(x))
         )
         abline(0, 0, lty = 3)
-        plot(x2, svdresid$v[, 1],
+        plot(
+          x2,
+          svdresid$v[, 1],
           main = "1st RSV resid",
-          xlab = "wavelength (nm)", type = "l", ylab = ""
+          xlab = "wavelength (nm)",
+          type = "l",
+          ylab = ""
         )
         abline(0, 0, lty = 3)
       }
@@ -647,13 +883,24 @@ spectemp <- function(sim, model, iter, kroncol = FALSE, lin = NA,
           digits = 4
         )))
       }
-      mtext(kinest, side = 3, outer = TRUE, line = 1)
+      mtext(kinest,
+        side = 3,
+        outer = TRUE,
+        line = 1
+      )
     }
     if (!modtype == "kin") {
-      specest <- paste("Spec par:", toString(signif(unlist(theta@specpar),
+      specest <- paste("Spec par:", toString(signif(
+        unlist(
+          theta@specpar
+        ),
         digits = 4
       )))
-      mtext(specest, side = 3, outer = TRUE, line = -0.5)
+      mtext(specest,
+        side = 3,
+        outer = TRUE,
+        line = -0.5
+      )
     }
   }
   # RESET FORMER PLOT OPTIONS
@@ -707,102 +954,175 @@ spectemp <- function(sim, model, iter, kroncol = FALSE, lin = NA,
 #' @importFrom stats rnorm
 #' @export
 #'
-"simndecay_gen_paramGUI" <- function(kinpar, tmax, deltat, specpar = vector(),
-                                     lmin, lmax, deltal, sigma, irf = FALSE, irfpar = vector(),
-                                     seqmod = FALSE, dispmu = FALSE, nocolsums = FALSE, disptau = FALSE,
-                                     parmu = list(), partau = vector(), lambdac = 0, fullk = FALSE,
-                                     kmat = matrix(), jvec = vector(), specfun = "gaus", nupow = 1,
-                                     irffun = "gaus", kinscal = vector(), lightregimespec = list(),
-                                     specdisp = FALSE, specdisppar = list(), parmufunc = "exp",
-                                     specdispindex = list(), amplitudes = vector(), specref = 0,
-                                     nosiminfo = TRUE) {
-  if (tmax > 0) {
-    x <- seq(0, tmax, deltat)
-  } else {
-    x <- c(1)
-  }
-  nt <- length(x)
-  ncomp <- length(kinpar)
-  x2 <- seq(lmin, lmax, deltal)
-  nl <- length(x2)
-
-  if (specdisp) {
-    ## store all the spectra; could do it otherwise if mem. is an
-    ## issue
-    EList <- list()
-    for (i in 1:nt) {
-      sp <- specparF(
-        specpar = specpar, xi = x[i], i = i,
-        specref = specref, specdispindex = specdispindex,
-        specdisppar = specdisppar, parmufunc = parmufunc
-      )
-      EList[[i]] <- calcEhiergaus(sp, x2, nupow)
+"simndecay_gen_paramGUI" <-
+  function(kinpar,
+           tmax,
+           deltat,
+           specpar = vector(),
+           lmin,
+           lmax,
+           deltal,
+           sigma,
+           irf = FALSE,
+           irfpar = vector(),
+           seqmod = FALSE,
+           dispmu = FALSE,
+           nocolsums = FALSE,
+           disptau = FALSE,
+           parmu = list(),
+           partau = vector(),
+           lambdac = 0,
+           fullk = FALSE,
+           kmat = matrix(),
+           jvec = vector(),
+           specfun = "gaus",
+           nupow = 1,
+           irffun = "gaus",
+           kinscal = vector(),
+           lightregimespec = list(),
+           specdisp = FALSE,
+           specdisppar = list(),
+           parmufunc = "exp",
+           specdispindex = list(),
+           amplitudes = vector(),
+           specref = 0,
+           nosiminfo = TRUE) {
+    if (tmax > 0) {
+      x <- seq(0, tmax, deltat)
+    } else {
+      x <- c(1)
     }
-  } else if (lmin == lmax) {
-    E2 <- matrix(1, nrow = 1, ncol = ncomp)
-    # TODO: set modType to 0?
-  } else {
-    E2 <- calcEhiergaus(specpar, x2, nupow)
-  }
+    nt <- length(x)
+    ncomp <- length(kinpar)
+    x2 <- seq(lmin, lmax, deltal)
+    nl <- length(x2)
 
-  if (!(dispmu || disptau)) {
-    if (nt == 1) {
-      C2 <- matrix(amplitudes, nrow = 1, ncol = ncomp)
+    if (specdisp) {
+      ## store all the spectra; could do it otherwise if mem. is an
+      ## issue
+      EList <- list()
+      for (i in 1:nt) {
+        sp <- specparF(
+          specpar = specpar,
+          xi = x[i],
+          i = i,
+          specref = specref,
+          specdispindex = specdispindex,
+          specdisppar = specdisppar,
+          parmufunc = parmufunc
+        )
+        EList[[i]] <- calcEhiergaus(sp, x2, nupow)
+      }
+    } else if (lmin == lmax) {
+      E2 <- matrix(1, nrow = 1, ncol = ncomp)
       # TODO: set modType to 0?
     } else {
-      C2 <- compModel(
-        k = kinpar, x = x, irfpar = irfpar,
-        irf = irf, seqmod = seqmod, fullk = fullk, kmat = kmat,
-        jvec = jvec, amplitudes = amplitudes, lightregimespec = lightregimespec,
-        nocolsums = nocolsums, kinscal = kinscal
-      )
+      E2 <- calcEhiergaus(specpar, x2, nupow)
     }
-    if (specdisp) {
-      psisim <- matrix(nrow = nt, ncol = nl)
-      E2 <- EList[[1]]
-      for (i in 1:nt) {
-        psisim[i, ] <- t(as.matrix(C2[i, ])) %*% t(EList[[i]])
+
+    if (!(dispmu || disptau)) {
+      if (nt == 1) {
+        C2 <- matrix(amplitudes, nrow = 1, ncol = ncomp)
+        # TODO: set modType to 0?
+      } else {
+        C2 <- compModel(
+          k = kinpar,
+          x = x,
+          irfpar = irfpar,
+          irf = irf,
+          seqmod = seqmod,
+          fullk = fullk,
+          kmat = kmat,
+          jvec = jvec,
+          amplitudes = amplitudes,
+          lightregimespec = lightregimespec,
+          nocolsums = nocolsums,
+          kinscal = kinscal
+        )
+      }
+      if (specdisp) {
+        psisim <- matrix(nrow = nt, ncol = nl)
+        E2 <- EList[[1]]
+        for (i in 1:nt) {
+          psisim[i, ] <- t(as.matrix(C2[i, ])) %*% t(EList[[i]])
+        }
+      } else {
+        psisim <- C2 %*% t(E2)
       }
     } else {
-      psisim <- C2 %*% t(E2)
-    }
-  } else {
-    psisim <- matrix(nrow = nt, ncol = nl)
-    for (i in 1:nl) {
-      irfvec <- irfparF(
-        irfpar, lambdac, x2[i], i, dispmu,
-        parmu, disptau, partau, "", "", "gaus"
-      )
+      psisim <- matrix(nrow = nt, ncol = nl)
+      for (i in 1:nl) {
+        irfvec <- irfparF(
+          irfpar,
+          lambdac,
+          x2[i],
+          i,
+          dispmu,
+          parmu,
+          disptau,
+          partau,
+          "",
+          "",
+          "gaus"
+        )
 
-      C2 <- compModel(
-        k = kinpar, x = x, irfpar = irfpar,
-        irf = irf, seqmod = seqmod, fullk = fullk, kmat = kmat,
-        jvec = jvec, amplitudes = amplitudes, lightregimespec = lightregimespec,
-        nocolsums = nocolsums, kinscal = kinscal
+        C2 <- compModel(
+          k = kinpar,
+          x = x,
+          irfpar = irfpar,
+          irf = irf,
+          seqmod = seqmod,
+          fullk = fullk,
+          kmat = kmat,
+          jvec = jvec,
+          amplitudes = amplitudes,
+          lightregimespec = lightregimespec,
+          nocolsums = nocolsums,
+          kinscal = kinscal
+        )
+        psisim[, i] <- C2 %*% cbind(E2[i, ])
+      }
+    }
+    dim(psisim) <- c(nt * nl, 1)
+    psi.df <- psisim + sigma * rnorm(nt * nl)
+    dim(psi.df) <- c(nt, nl)
+
+    if (nosiminfo) {
+      dat(
+        psi.df = psi.df,
+        x = x,
+        nt = nt,
+        x2 = x2,
+        nl = nl,
+        simdata = FALSE
       )
-      psisim[, i] <- C2 %*% cbind(E2[i, ])
+    } else {
+      kin(
+        psi.df = psi.df,
+        x = x,
+        nt = nt,
+        x2 = x2,
+        nl = nl,
+        C2 = C2,
+        E2 = E2,
+        kinpar = kinpar,
+        specpar = specpar,
+        seqmod = seqmod,
+        irf = irf,
+        irfpar = irfpar,
+        dispmu = dispmu,
+        disptau = disptau,
+        parmu = parmu,
+        partau = partau,
+        lambdac = lambdac,
+        simdata = TRUE,
+        fullk = fullk,
+        kmat = kmat,
+        jvec = jvec,
+        amplitudes = amplitudes
+      )
     }
   }
-  dim(psisim) <- c(nt * nl, 1)
-  psi.df <- psisim + sigma * rnorm(nt * nl)
-  dim(psi.df) <- c(nt, nl)
-
-  if (nosiminfo) {
-    dat(
-      psi.df = psi.df, x = x, nt = nt, x2 = x2, nl = nl,
-      simdata = FALSE
-    )
-  } else {
-    kin(
-      psi.df = psi.df, x = x, nt = nt, x2 = x2, nl = nl,
-      C2 = C2, E2 = E2, kinpar = kinpar, specpar = specpar,
-      seqmod = seqmod, irf = irf, irfpar = irfpar, dispmu = dispmu,
-      disptau = disptau, parmu = parmu, partau = partau,
-      lambdac = lambdac, simdata = TRUE, fullk = fullk,
-      kmat = kmat, jvec = jvec, amplitudes = amplitudes
-    )
-  }
-}
 
 
 

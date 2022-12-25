@@ -13,7 +13,9 @@ runGUI <- function() {
   appDir <- system.file("shinyApps", "paramGUI", package = "paramGUI")
   if (appDir == "") {
     stop("Could not find example directory.
-         Try re-installing `paramGUI`.", call. = FALSE)
+         Try re-installing `paramGUI`.",
+      call. = FALSE
+    )
   }
 
   shiny::runApp(appDir, display.mode = "normal")
