@@ -36,7 +36,8 @@ is_compressed <-
 
 #' is_rdata
 #'
-#' @description Checks a file is a rdata file by inspecting the file for so called magic bytes
+#' @description Checks a file is a rdata file by inspecting the file for
+#' so called magic bytes
 #'
 #' @param filename The filename of the file to test if it is an rdata file
 #'
@@ -45,7 +46,7 @@ is_compressed <-
 #'
 is_rdata <- function(filename) {
   # check for magic number
-  # https://github.com/wch/r-source/blob/b99d403f4b7337553acb2d2108c7a00e6c19f908/src/main/saveload.c#L1786
+  # See the R_ReadMagic function in the R-source code at: src/main/saveload.c
 
   fh <- if (!is_compressed(filename)) {
     file(filename, "rb")
