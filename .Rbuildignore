@@ -10,3 +10,6 @@
 LICENSE.md
 README.md
 CONTRIBUTING.md
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
